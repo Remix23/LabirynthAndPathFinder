@@ -15,11 +15,14 @@ namespace LabirynthAndPathFinder
         public bool isEnd;
 
         private Color _color;
-        private int _size; 
+        private int _size;
 
+        // path finding
         public int Fcost;
         public int Gcost;
         public int Hcost;
+
+        public Tile? Parent; 
 
         public Tile(Point pos, Color color, int size, bool is_wall)
         {
@@ -38,6 +41,7 @@ namespace LabirynthAndPathFinder
 
         public void Draw (Graphics g)
         {
+            _color = Color.White;
             if (isWall) _color = Color.Gray;
             if (isStart) _color = Color.Red;
             if (isEnd) _color = Color.Blue;
@@ -54,16 +58,19 @@ namespace LabirynthAndPathFinder
             return Math.Sqrt(Math.Pow(t2.Pos.X - t1.Pos.X, 2) + Math.Pow(t2.Pos.Y - t2.Pos.X, 2));
         }
 
-        public static List<Point> GetNeighbours (int x, int y, int maxX, int maxY)
+        public static List<Point> GetNeighbours (int x, int y, int maxX, int maxY, int min_step, bool cross_allowed)
         {
             List<Point> list = new List<Point>();
-            for (int i = -2; i < 3; i++)
+            for (int i = -min_step; i < min_step + 1; i += min_step)
             {
-                for (int j = -2; j < 3; j++)
+                for (int j = -min_step; j < min_step + 1; j += min_step)
                 {
-                    if (Tile.AreCordsValid(x + i, y + j, maxX, maxY) && (i == 0 ^ j == 0))
+                    if (Tile.AreCordsValid(x + i, y + j, maxX, maxY))
                     {
-                        list.Add(new Point(x + i, y + j));
+                        if ((!cross_allowed && (i == 0 ^ j == 0)) || (!(i == 0 && j == 0) && cross_allowed)) // check if move across is allowed 
+                        {
+                            list.Add(new Point(x + i, y + j));
+                        }
                     }
                 }
             }

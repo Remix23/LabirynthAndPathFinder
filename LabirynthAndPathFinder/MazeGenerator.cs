@@ -19,7 +19,7 @@ namespace LabirynthAndPathFinder
             {
                 Point p = stack.First();
 
-                List<Point> n = Tile.GetNeighbours(p.X, p.Y, board.GetLength(1), board.GetLength(0));
+                List<Point> n = Tile.GetNeighbours(p.X, p.Y, board.GetLength(1), board.GetLength(0), 2, false);
 
                 if (n.Count == 0) 
                 {
@@ -34,6 +34,14 @@ namespace LabirynthAndPathFinder
                 else if (start.Y < connection.Y) board[start.X, start.Y + 1].isWall = true;
                 else board[start.X, start.Y - 1].isWall = true;
             }
+        }
+
+        public static Point RandomPoint (int maxX, int maxY)
+        {
+            Random r = new Random();
+            int x = Convert.ToInt32(r.NextDouble() * maxX);
+            int y = Convert.ToInt32(r.NextDouble() * maxY);
+            return new Point(x, y);
         }
     }
 }

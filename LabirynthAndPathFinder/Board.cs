@@ -11,8 +11,8 @@ namespace LabirynthAndPathFinder
     {
 
         public Tile[,] Tiles;
-        public Point? Start;
-        public Point? End;
+        public Point Start;
+        public Point End;
 
         public int BoardWidth;
         public int BoardHeight;
@@ -36,11 +36,24 @@ namespace LabirynthAndPathFinder
             Tiles = new Tile[NumOfCellsX,NumOfCellsY];
             Path = new List<Point>();
 
-            Start = null;
-            End = null;
+            Start = new Point(-1, -1);
+            End = new Point(-1, -1);
 
             _isAnimating = false;
             _frame = 0;
+
+            _genTiles();
+        }
+
+        private void _genTiles ()
+        {
+            for (int x = 0; x < NumOfCellsX; x++)
+            {
+                for (int y = 0; y < NumOfCellsY; y++)
+                {
+                    Tiles[x, y] = new Tile(new Point(x, y), Color.FromName("White"), TileSize, false);
+                }
+            }
         }
 
         public void SetStartingPoint (int x, int y)
@@ -66,21 +79,66 @@ namespace LabirynthAndPathFinder
             Tiles[x, y].isWall = true;
         }
 
+        public void DestroyWall (int x, int y)
+        {
+            Tiles[x, y].isStart = false;
+            Tiles[x, y].isEnd = false;
+            Tiles[x, y].isWall = false;
+        }
+
+        public void HandleClick (Point location, MouseButtons mousebtn)
+        {
+            int x = location.X / TileSize;
+            int y = location.Y / TileSize;
+
+            if (!Tile.AreCordsValid(x, y, NumOfCellsX, NumOfCellsY)) return;
+
+            if (mousebtn == MouseButtons.Left)
+            {
+                CreateWall(x, y);
+            } else if (mousebtn == MouseButtons.Right)
+            {
+                DestroyWall(x, y);
+            }
+        }
+
         public void CreateMaze ()
         {
             MazeGenerator.GenMaze(Tiles, new Point(0, 0));
+
+            // start
+            Point p = MazeGenerator.RandomPoint(NumOfCellsX, NumOfCellsY);
+            SetStartingPoint(p.X, p.Y);
+
+            // end
+            p = MazeGenerator.RandomPoint(NumOfCellsX, NumOfCellsY);
+            while (Tiles[p.X, p.Y].isStart) { p = MazeGenerator.RandomPoint(NumOfCellsX, NumOfCellsY); }
+            SetEndPoint(p.X, p.Y);
         }
 
         public void GetPath ()
         {
-            
+            PathFinder.FindPath(Tiles, Start, End);
+            Path = PathFinder.ReconstructPath(Tiles, Start, End);
         }
 
         public void Solve ()
         {
-            GetPath();
-            _isAnimating = true;
-            _frame = 0;
+            string title = "Akcja nie możliwa";
+            if (!Tile.AreCordsValid(Start.X, Start.Y, NumOfCellsX, NumOfCellsY))
+            {
+                MessageBox.Show("Na planszy musi być punkt startowy", title, MessageBoxButtons.OK);
+            }
+            else if (!Tile.AreCordsValid(End.X, End.Y, NumOfCellsX, NumOfCellsY))
+            {
+                MessageBox.Show("Na planszy musi być punkt końcowy", title, MessageBoxButtons.OK);
+            }
+            else
+            {
+                GetPath();
+                _isAnimating = true;
+                _frame = 0;
+            }
         }
 
         public void Draw(Graphics g)
