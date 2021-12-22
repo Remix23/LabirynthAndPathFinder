@@ -58,6 +58,7 @@ namespace LabirynthAndPathFinder
 
         public void SetStartingPoint (int x, int y)
         {
+            if (Start.X != -1) Reset(Start.X, Start.Y);
             Tiles[x, y].isStart = true;
             Tiles[x, y].isEnd = false;
             Tiles[x, y].isWall = false;
@@ -66,6 +67,7 @@ namespace LabirynthAndPathFinder
 
         public void SetEndPoint (int x, int y)
         {
+            if (End.X != -1) Reset(End.X, End.Y);
             Tiles[x, y].isStart = false;
             Tiles[x, y].isEnd = true;
             Tiles[x, y].isWall = false;
@@ -79,7 +81,7 @@ namespace LabirynthAndPathFinder
             Tiles[x, y].isWall = true;
         }
 
-        public void DestroyWall (int x, int y)
+        public void Reset (int x, int y)
         {
             Tiles[x, y].isStart = false;
             Tiles[x, y].isEnd = false;
@@ -95,15 +97,34 @@ namespace LabirynthAndPathFinder
 
             if (mousebtn == MouseButtons.Left)
             {
-                CreateWall(x, y);
+                SetStartingPoint(x, y);
             } else if (mousebtn == MouseButtons.Right)
             {
-                DestroyWall(x, y);
+                SetEndPoint(x, y);
+            }
+        }
+
+        public void HandleMove (Point location, MouseButtons mousebtn)
+        {
+            int x = location.X / TileSize;
+            int y = location.Y / TileSize;
+
+            if (!Tile.AreCordsValid(x, y, NumOfCellsX, NumOfCellsY)) return;
+
+            if (mousebtn == MouseButtons.Left)
+            {
+                CreateWall(x, y);
+            }
+            else if (mousebtn == MouseButtons.Right)
+            {
+                Reset(x, y);
             }
         }
 
         public void CreateMaze ()
         {
+            MazeGenerator.ResetMaze(Tiles);
+
             MazeGenerator.GenMaze(Tiles, new Point(0, 0));
 
             // start

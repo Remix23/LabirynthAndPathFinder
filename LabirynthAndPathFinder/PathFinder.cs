@@ -19,26 +19,24 @@ namespace LabirynthAndPathFinder
                 Point current = to_process.First();
                 to_process.Remove(current);
 
-                List<Point> neighbours = Tile.GetNeighbours(current.X, current.Y, board.GetLength(1), board.GetLength(0), 1, true);
-
+                List<Point> neighbours = Tile.GetNeighbours(current.X, current.Y, board.GetLength(0), board.GetLength(1), 1, true);
                 foreach (Point neighbour in neighbours)
                 {
                     if (!board[neighbour.X, neighbour.Y].isWall)
                     {
-                        float gCost = board[current.X, current.Y].Gcost + 0;
+                        float gCost = board[current.X, current.Y].Gcost + (float)Tile.GetDistance(board[neighbour.X, neighbour.Y], board[current.X, current.Y]);
                         float hCost = (float)Tile.GetDistance(board[neighbour.X, neighbour.Y], board[end.X, end.Y]);
                         float fCost = gCost + hCost;
-                        if (fCost < board[current.X, current.Y].Fcost)
+                        board[neighbour.X, neighbour.Y].Gcost = Convert.ToInt32(gCost * 10);
+                        board[neighbour.X, neighbour.Y].Hcost = Convert.ToInt32(hCost * 10);
+                        board[neighbour.X, neighbour.Y].Fcost = Convert.ToInt32(fCost * 10);
+                        board[neighbour.X, neighbour.Y].Parent = board[current.X, current.Y];
+                        to_process.Add(neighbour);
+                        if (board[neighbour.X, neighbour.Y].isEnd)
                         {
                             board[neighbour.X, neighbour.Y].Parent = board[current.X, current.Y];
-                            to_process.Add(neighbour);
+                            return;
                         }
-                    }
-                    if (board[neighbour.X, neighbour.Y].isEnd)
-                    {
-                        board[neighbour.X, neighbour.Y].Parent = board[current.X, current.Y];
-                        to_process.Clear();
-                        return;
                     }
                 };
             }

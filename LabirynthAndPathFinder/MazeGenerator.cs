@@ -15,33 +15,48 @@ namespace LabirynthAndPathFinder
             List<Point> visited = new List<Point>();
             stack.Push(start);
 
-            while (board.Length > visited.Count)
+            while (board.Length > visited.Count && stack.Count > 0)
             {
-                Point p = stack.First();
+                Point current = stack.First();
+                board[current.X, current.Y].Visited = true;
+                board[current.X, current.Y].isWall = false;
 
-                List<Point> n = Tile.GetNeighbours(p.X, p.Y, board.GetLength(1), board.GetLength(0), 2, false);
+                List<Point> neighbours = Tile.GetNeighbours(current.X, current.Y, board.GetLength(0), board.GetLength(1), 2, false);
 
-                if (n.Count == 0) 
+                neighbours = neighbours.Where( p => !board[p.X, p.Y].Visited ).ToList();
+
+                if (neighbours.Count == 0) 
                 {
                     stack.Pop();
                     continue;
                 }
 
-                Point connection = n[rng.Next(n.Count)];
+                Point connection = neighbours[rng.Next(neighbours.Count)];
 
-                if (start.X < connection.X) board[start.X + 1, start.Y].isWall = true;
-                else if (start.X > connection.X) board[start.X - 1, start.Y].isWall = true;
-                else if (start.Y < connection.Y) board[start.X, start.Y + 1].isWall = true;
-                else board[start.X, start.Y - 1].isWall = true;
+                if (current.X < connection.X) board[current.X + 1, current.Y].isWall = false;
+                else if (current.X > connection.X) board[current.X - 1, current.Y].isWall = false;
+                else if (current.Y < connection.Y) board[current.X, current.Y + 1].isWall = false;
+                else if (current.Y > connection.Y) board[current.X, current.Y - 1].isWall = false;
+
+                stack.Push(connection);
             }
         }
 
         public static Point RandomPoint (int maxX, int maxY)
         {
             Random r = new Random();
-            int x = Convert.ToInt32(r.NextDouble() * maxX);
-            int y = Convert.ToInt32(r.NextDouble() * maxY);
+            int x = Convert.ToInt32(r.NextDouble() * (maxX - 1));
+            int y = Convert.ToInt32(r.NextDouble() * (maxY - 1));
             return new Point(x, y);
+        }
+
+        public static void ResetMaze (Tile[,] board)
+        {
+            foreach (Tile tile in board)
+            {
+                tile.Visited = false;
+                tile.isWall = true;
+            }
         }
     }
 }

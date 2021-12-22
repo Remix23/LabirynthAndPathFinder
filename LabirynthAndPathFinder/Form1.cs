@@ -10,7 +10,7 @@ namespace LabirynthAndPathFinder
         {
             InitializeComponent();
 
-            _tileSize = 50;
+            _tileSize = 20;
             _board = new Board(pictureBox.Width, pictureBox.Height, _tileSize);
         }
 
@@ -19,7 +19,7 @@ namespace LabirynthAndPathFinder
             _board.Draw(e.Graphics);
         }
 
-        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBox_DoubleClick(object sender, MouseEventArgs e)
         {
             _board.HandleClick(e.Location, e.Button);
             pictureBox.Invalidate();
@@ -28,7 +28,19 @@ namespace LabirynthAndPathFinder
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.None) return;
-            _board.HandleClick(e.Location, e.Button);
+            _board.HandleMove(e.Location, e.Button);
+            pictureBox.Invalidate();
+        }
+
+        private void genMazeBtn_Click(object sender, EventArgs e)
+        {
+            _board.CreateMaze();
+            pictureBox.Invalidate();
+        }
+
+        private void solveBtn_Click(object sender, EventArgs e)
+        {
+            _board.Solve();
             pictureBox.Invalidate();
         }
     }

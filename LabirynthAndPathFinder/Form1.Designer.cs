@@ -43,7 +43,7 @@
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             this.pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_Paint);
-            this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseClick);
+            this.pictureBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_DoubleClick);
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             // 
             // genMazeBtn
@@ -57,6 +57,7 @@
             this.genMazeBtn.TabIndex = 1;
             this.genMazeBtn.Text = "Generate Maze";
             this.genMazeBtn.UseVisualStyleBackColor = false;
+            this.genMazeBtn.Click += new System.EventHandler(this.genMazeBtn_Click);
             // 
             // solveBtn
             // 
@@ -66,6 +67,7 @@
             this.solveBtn.TabIndex = 2;
             this.solveBtn.Text = "Solve";
             this.solveBtn.UseVisualStyleBackColor = true;
+            this.solveBtn.Click += new System.EventHandler(this.solveBtn_Click);
             // 
             // showAnimationCheck
             // 

@@ -17,6 +17,9 @@ namespace LabirynthAndPathFinder
         private Color _color;
         private int _size;
 
+        // maze genarating 
+        public bool Visited;
+
         // path finding
         public int Fcost;
         public int Gcost;
@@ -31,6 +34,8 @@ namespace LabirynthAndPathFinder
 
             isStart = false;
             isEnd = false;
+
+            Visited = false;
 
             _color = color;
             _size = size;
@@ -67,9 +72,12 @@ namespace LabirynthAndPathFinder
                 {
                     if (Tile.AreCordsValid(x + i, y + j, maxX, maxY))
                     {
-                        if ((!cross_allowed && (i == 0 ^ j == 0)) || (!(i == 0 && j == 0) && cross_allowed)) // check if move across is allowed 
+                        if (cross_allowed)
                         {
-                            list.Add(new Point(x + i, y + j));
+                            if (i != 0 || j != 0) list.Add(new Point(x + i, y + j));
+                        } else
+                        {
+                            if (i == 0 ^ j == 0) list.Add(new Point(x + i, y + j));
                         }
                     }
                 }
