@@ -43,5 +43,11 @@ namespace LabirynthAndPathFinder
             _board.Solve();
             pictureBox.Invalidate();
         }
+
+        private void ClearBtn_Click(object sender, EventArgs e)
+        {
+            _board.ClearScreen();
+            pictureBox.Invalidate();
+        }
     }
 }

@@ -124,6 +124,7 @@ namespace LabirynthAndPathFinder
         public void CreateMaze ()
         {
             MazeGenerator.ResetMaze(Tiles);
+            _clearPath();
 
             MazeGenerator.GenMaze(Tiles, new Point(0, 0));
 
@@ -139,6 +140,7 @@ namespace LabirynthAndPathFinder
 
         public void GetPath ()
         {
+            PathFinder.ResetSceneForSearch(Tiles);
             PathFinder.FindPath(Tiles, Start, End);
             Path = PathFinder.ReconstructPath(Tiles, Start, End);
         }
@@ -162,18 +164,38 @@ namespace LabirynthAndPathFinder
             }
         }
 
+        public void ClearScreen ()
+        {
+            for (int x = 0; x < Tiles.GetLength(0); x++)
+            {
+                for (int y = 0; y < Tiles.GetLength(1); y++)
+                {
+                    Reset(x, y);
+                }
+            }
+            _clearPath();
+        }
+
+        private void _clearPath ()
+        {
+            if (Path.Count > 0)
+            {
+                Path.Clear();
+            }
+        }
+
         public void Draw(Graphics g)
         {
             foreach (var tile in Tiles)
             {
                 tile.Draw(g);
             }
-            if (_isAnimating)
+            if (Path.Count > 0)
             {
-                if (_frame == Path.Count) { _isAnimating = false; return; }
-                Point pos = Path[_frame];
-                g.FillEllipse(Brushes.Black, pos.X, pos.Y, TileSize, TileSize);
-                _frame++;
+               Path.ForEach(p =>
+               {
+                   g.FillRectangle(Brushes.Black, p.X * TileSize + 1, p.Y * TileSize + 1, TileSize - 2, TileSize - 2);
+               });
             }
         }
     }

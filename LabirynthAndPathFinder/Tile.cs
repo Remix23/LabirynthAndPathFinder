@@ -21,11 +21,11 @@ namespace LabirynthAndPathFinder
         public bool Visited;
 
         // path finding
-        public int Fcost;
-        public int Gcost;
-        public int Hcost;
+        public float Fcost;
+        public float Gcost;
+        public float Hcost;
 
-        public Tile? Parent; 
+        public Point Parent; 
 
         public Tile(Point pos, Color color, int size, bool is_wall)
         {
@@ -42,6 +42,8 @@ namespace LabirynthAndPathFinder
             Fcost = 0;
             Gcost = 0;
             Hcost = 0;
+
+            Parent = new Point(-1, -1);
         }
 
         public void Draw (Graphics g)

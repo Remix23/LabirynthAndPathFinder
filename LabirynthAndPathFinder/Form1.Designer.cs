@@ -32,6 +32,7 @@
             this.genMazeBtn = new System.Windows.Forms.Button();
             this.solveBtn = new System.Windows.Forms.Button();
             this.showAnimationCheck = new System.Windows.Forms.CheckBox();
+            this.ClearBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,11 +80,22 @@
             this.showAnimationCheck.Text = "Show Path Animation";
             this.showAnimationCheck.UseVisualStyleBackColor = true;
             // 
+            // ClearBtn
+            // 
+            this.ClearBtn.Location = new System.Drawing.Point(904, 173);
+            this.ClearBtn.Name = "ClearBtn";
+            this.ClearBtn.Size = new System.Drawing.Size(110, 23);
+            this.ClearBtn.TabIndex = 4;
+            this.ClearBtn.Text = "Clear";
+            this.ClearBtn.UseVisualStyleBackColor = true;
+            this.ClearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1057, 653);
+            this.Controls.Add(this.ClearBtn);
             this.Controls.Add(this.showAnimationCheck);
             this.Controls.Add(this.solveBtn);
             this.Controls.Add(this.genMazeBtn);
@@ -102,5 +114,6 @@
         private Button genMazeBtn;
         private Button solveBtn;
         private CheckBox showAnimationCheck;
+        private Button ClearBtn;
     }
 }
