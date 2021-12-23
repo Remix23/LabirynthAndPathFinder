@@ -10,7 +10,7 @@ namespace LabirynthAndPathFinder
         {
             InitializeComponent();
 
-            _tileSize = 20;
+            _tileSize = 10;
             _board = new Board(pictureBox.Width, pictureBox.Height, _tileSize);
         }
 

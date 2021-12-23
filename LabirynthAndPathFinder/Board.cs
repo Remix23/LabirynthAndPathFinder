@@ -102,6 +102,7 @@ namespace LabirynthAndPathFinder
             {
                 SetEndPoint(x, y);
             }
+            _clearPath();
         }
 
         public void HandleMove (Point location, MouseButtons mousebtn)
@@ -119,6 +120,7 @@ namespace LabirynthAndPathFinder
             {
                 Reset(x, y);
             }
+            _clearPath();
         }
 
         public void CreateMaze ()

@@ -62,7 +62,7 @@ namespace LabirynthAndPathFinder
 
         public static double GetDistance (Tile t1, Tile t2)
         {
-            return Math.Sqrt(Math.Pow(t2.Pos.X - t1.Pos.X, 2) + Math.Pow(t2.Pos.Y - t2.Pos.X, 2));
+            return Math.Sqrt(Math.Pow(t2.Pos.X - t1.Pos.X, 2) + Math.Pow(t2.Pos.Y - t1.Pos.Y, 2));
         }
 
         public static List<Point> GetNeighbours (int x, int y, int maxX, int maxY, int min_step, bool cross_allowed)

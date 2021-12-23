@@ -30,16 +30,16 @@ namespace LabirynthAndPathFinder
                         float hCost = (float)Tile.GetDistance(board[neighbour.X, neighbour.Y], board[end.X, end.Y]);
                         float fCost = gCost + hCost;
                         
-                        if (board[neighbour.X, neighbour.Y].Fcost > fCost)
+                        if (board[neighbour.X, neighbour.Y].Fcost > fCost) // check if the new node if it is worth 
                         {
-                            if (board[neighbour.X, neighbour.Y].Parent == new Point(-1, -1))
+                            board[neighbour.X, neighbour.Y].Gcost = gCost;
+                            board[neighbour.X, neighbour.Y].Hcost = hCost;
+                            board[neighbour.X, neighbour.Y].Fcost = fCost;
+                            if (board[neighbour.X, neighbour.Y].Parent == new Point(-1, -1)) // checking if it was visited before 
                             {
-                                board[neighbour.X, neighbour.Y].Gcost = gCost;
-                                board[neighbour.X, neighbour.Y].Hcost = hCost;
-                                board[neighbour.X, neighbour.Y].Fcost = fCost;
-                                board[neighbour.X, neighbour.Y].Parent = current;
                                 to_process.Enqueue(neighbour, fCost);
                             }
+                            board[neighbour.X, neighbour.Y].Parent = current;                            
                         }
                         
                         if (board[neighbour.X, neighbour.Y].isEnd)
